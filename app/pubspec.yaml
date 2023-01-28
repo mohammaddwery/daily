@@ -1,0 +1,43 @@
+name: daily
+description: Task mangement application.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.2 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.2
+
+  core:
+    path: ../infrastructure/core
+  navigator:
+    path: ../infrastructure/navigator
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: RedHatDisplay
+      fonts:
+        - asset: assets/fonts/RedHatDisplay-Light.ttf
+          weight: 300
+        - asset: assets/fonts/RedHatDisplay-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/RedHatDisplay-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/RedHatDisplay-Semibold.ttf
+          weight: 600
+        - asset: assets/fonts/RedHatDisplay-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/RedHatDisplay-ExtraBold.ttf
+          weight: 900

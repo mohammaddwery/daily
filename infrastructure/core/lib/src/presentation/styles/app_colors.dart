@@ -18,6 +18,7 @@ class AppColors {
   static const Color greyShade400 = Color(0xFFBDBDBD);
   static const Color separator = Color(0xFFB8B8B8);
   static const Color appbar = Color(0xFFFFFFFF);
+  static const Color secondaryCardBackground = Color(0xFFF3F4F6);
   static const Color cardBackground = Color(0xFFFFFFFF);
   static const Color lightIconButton = Color(0xFFFFFFFF);
   static const Color calendarBackgroundColor = Color(0xFFF6F6F6);
@@ -51,6 +52,7 @@ extension AppColorsScheme on ColorScheme {
   Color get yellowShade800 => AppColors.yellowShade800;
   Color get appbar => AppColors.appbar;
   Color get cardBackground => AppColors.cardBackground;
+  Color get secondaryCardBackground => AppColors.secondaryCardBackground;
   BoxShadow get cardShadow => AppColors.cardShadow;
   BoxShadow get appbarShadow => AppColors.appbarShadow;
   Color get separator => AppColors.separator;

@@ -18,14 +18,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => MaterialApp(
-    home: Scaffold(
-      body: Center(
-        child: Text(
-          'Home',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ),
-    ),
     onGenerateRoute: (settings) => generateRoute(
       settings: settings,
       routes: routes,

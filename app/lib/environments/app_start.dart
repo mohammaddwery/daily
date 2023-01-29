@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:task_management/task_management.dart';
 import '../app/my_app.dart';
 import '../di/app_component.dart';
 import '../resolvers/app_resolver.dart';
@@ -17,6 +18,7 @@ abstract class AppStart {
     // App
     AppResolver(),
 
+    TaskResolver(),
   ];
 
   AppStart(this.buildConfig);

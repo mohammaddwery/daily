@@ -18,6 +18,8 @@ dependencies:
     path: ../infrastructure/core
   navigator:
     path: ../infrastructure/navigator
+  task_management:
+    path: ../features/task_management
 
 dev_dependencies:
   flutter_test:

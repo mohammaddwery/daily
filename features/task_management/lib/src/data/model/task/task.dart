@@ -1,5 +1,5 @@
-import 'task_state.dart';
-import 'task_label.dart';
+import '../task_state/task_state.dart';
+import '../label/task_label.dart';
 
 class Task {
   final int id;

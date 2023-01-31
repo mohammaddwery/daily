@@ -16,6 +16,7 @@ dependencies:
   flutter_svg: ^1.1.6
   rxdart: ^0.27.7
   intl: ^0.17.0
+  sqflite: ^2.2.4+1
 
 dev_dependencies:
   flutter_test:
@@ -27,3 +28,6 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/seed_data/task_labels.json
+    - assets/seed_data/task_states.json
+    - assets/seed_data/tasks.json

@@ -238,7 +238,7 @@ abstract class CrudDataBlocHandler {
     required UiState<List<T>>? Function() getCurrentState,
     required Function(UiState<List<T>>? uiState) setCurrentState,
     required Future<List<T>> Function() crudDataList,
-    String? exceptionTag,
+    required String exceptionTag,
     Function(String)? onError,
     Function()? onData,
   }) async {

@@ -1,6 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import '../../../domain/entity/task.dart';
+import '../../../data/model/task/task.dart';
 import 'task_label_badge.dart';
 
 class TaskCard extends StatelessWidget {

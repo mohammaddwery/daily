@@ -1,10 +1,10 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:task_management/src/presentation/widget/task_base_widget_state.dart';
-import '../../../domain/entity/task_state.dart';
+import '../../../data/model/task_state/task_state.dart';
 import '../../helpers/task_subtitles_keys.dart';
 import '../../widget/task_card/task_card.dart';
-import '../../../domain/entity/task.dart';
+import '../../../data/model/task/task.dart';
 
 class TaskStateCard extends StatefulWidget {
   final TaskState state;

@@ -2,7 +2,7 @@ import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:task_management/src/presentation/widget/task_base_widget_state.dart';
 import 'package:task_management/src/presentation/widget/task_state/task_state_card.dart';
-import '../../../domain/entity/task_state.dart';
+import '../../../data/model/task_state/task_state.dart';
 import '../../helpers/task_subtitles_keys.dart';
 import 'board_screen_bloc.dart';
 

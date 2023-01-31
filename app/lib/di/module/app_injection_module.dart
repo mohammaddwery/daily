@@ -12,6 +12,7 @@ class AppInjectionModule implements InjectionModule {
     injector
       ..registerSingleton<BuildConfig>(buildConfig)
       ..registerSingleton<GlobalKey<NavigatorState>>(navigatorKey)
+      ..registerSingleton<DatabaseManager>(AppDatabaseManager())
     ;
   }
 }

@@ -1,18 +1,27 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:task_management/src/domain/entity/task.dart';
-import 'package:task_management/src/domain/entity/task_label.dart';
-import 'package:task_management/src/domain/entity/task_state.dart';
+import '../../../data/model/task/task.dart';
+import '../../../data/model/label/task_label.dart';
+import '../../../data/model/task_state/task_state.dart';
+
 
 class BoardScreenBloc extends CrudDataBlocHandler {
+  final UseCase<List<TaskState>, NoParams> _getLocalTaskSatesUseCase;
+  BoardScreenBloc({
+    required UseCase<List<TaskState>, NoParams> getLocalTaskSatesUseCase,
+  }): _getLocalTaskSatesUseCase = getLocalTaskSatesUseCase;
+
   final taskStatesController = BehaviorSubjectComponent<UiState<List<TaskState>>?>();
   int get taskStatesCount => taskStatesController.getValue()?.data?.length??0;
 
-  fetchTaskState() async {
-    taskStatesController.setValue(UiState.loading());
-    await Future.delayed(const Duration(seconds: 2));
-    taskStatesController.setValue(UiState.success(_taskStates));
-  }
+  static const String logTag = 'BoardScreenBloc';
+
+  fetchTaskState() async => handleCrudDataList(
+    getCurrentState: taskStatesController.getValue,
+    setCurrentState: taskStatesController.setValue,
+    exceptionTag: '$logTag fetchTaskState()',
+    crudDataList: () async => await _getLocalTaskSatesUseCase.call(NoParams()),
+  );
 
   final List<TaskState> _taskStates = [
     TaskState(

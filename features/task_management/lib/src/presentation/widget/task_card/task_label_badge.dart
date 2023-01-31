@@ -1,6 +1,6 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import '../../../domain/entity/task_label.dart';
+import '../../../data/model/label/task_label.dart';
 
 class TaskLabelBadge extends StatelessWidget {
   final TaskLabel label;

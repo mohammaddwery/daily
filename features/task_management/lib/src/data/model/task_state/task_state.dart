@@ -1,4 +1,4 @@
-import 'task.dart';
+import '../task/task.dart';
 
 class TaskState {
   final int id;

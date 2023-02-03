@@ -1,13 +1,14 @@
 import 'package:core/core.dart';
+import 'package:task_management/src/data/model/label/task_label.dart';
 import '../../data/resource/local/task_database_provider.dart';
 import '../../data/model/task_state/task_state.dart';
 
-class GetLocalTaskStatesUseCase extends UseCase<List<TaskState>, NoParams> {
+class GetLocalTaskLabelsUseCase extends UseCase<List<TaskLabel>, NoParams> {
   final TaskDatabaseProvider _databaseProvider;
-  GetLocalTaskStatesUseCase({
+  GetLocalTaskLabelsUseCase({
     required TaskDatabaseProvider databaseProvider,
   }): _databaseProvider = databaseProvider;
 
   @override
-  Future<List<TaskState>> call(NoParams param) => _databaseProvider.getTaskStates();
+  Future<List<TaskLabel>> call(NoParams param) => _databaseProvider.getTaskLabels();
 }

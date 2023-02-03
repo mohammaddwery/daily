@@ -15,8 +15,8 @@ Color adaptStringToColor(String color) {
   var opacity = 'FF';
   var colorWithoutOpacity = color;
   if(color.length == 8) {
-    opacity = color.substring(5,);
-    colorWithoutOpacity = color.substring(0, 5,);
+    opacity = color.substring(6,);
+    colorWithoutOpacity = color.substring(0, 6,);
   }
 
   return Color(int.parse('0x$opacity$colorWithoutOpacity'));

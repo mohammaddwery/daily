@@ -1,4 +1,18 @@
 {
   "daily_board": "Daily Board",
-  "new_task": "New task"
+  "new_task": "New task",
+  "status": "Status",
+  "title": "Title",
+  "description": "Description",
+  "label": "Label",
+  "save": "Save",
+  "select_your_state": "Select your state",
+  "select_your_label": "Select your label",
+  "type_your_task_title": "Type your task's title",
+  "type_your_task_description": "Type your task's description",
+  "select_task_state_validation_message": "Please select a state for your task",
+  "task_title_validation_message": "Please enter a valid title",
+  "task_description_validation_message": "Please enter a valid description",
+  "create_task": "Create task",
+  "update_task": "Update task"
 }

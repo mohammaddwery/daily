@@ -1,14 +1,22 @@
 [
   {
-    "name": "WEB",
-    "color": "AB40FFFF"
+    "name": "Workout",
+    "color": "AC40FFFF"
   },
   {
-    "name": "MOBILE",
-    "color": "F0AEFF69"
-  },
-  {
-    "name": "UI",
+    "name": "Job",
     "color": "40FBFFE0"
+  },
+  {
+    "name": "Meeting",
+    "color": "9F3915FF"
+  },
+  {
+    "name": "Hangout",
+    "color": "3CA120FF"
+  },
+  {
+    "name": "Chilling",
+    "color": "FE40FFFF"
   }
 ]

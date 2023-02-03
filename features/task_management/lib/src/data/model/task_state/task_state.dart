@@ -3,7 +3,7 @@ import '../task/task.dart';
 class TaskState {
   final int id;
   final String name;
-  final List<Task> tasks;
+  List<Task> tasks;
   TaskState({
     required this.id,
     required this.name,

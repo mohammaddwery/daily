@@ -1,16 +1,22 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
-import 'package:task_management/src/presentation/widget/task_base_widget_state.dart';
+import '../task_base_widget_state.dart';
 import '../../../data/model/task_state/task_state.dart';
 import '../../helpers/task_subtitles_keys.dart';
 import '../../widget/task_card/task_card.dart';
 import '../../../data/model/task/task.dart';
+import 'task_state_card_bloc.dart';
+
 
 class TaskStateCard extends StatefulWidget {
   final TaskState state;
   final double? cardWidth;
-  const TaskStateCard(this.state,
-      {this.cardWidth,
+  /// Called ONLY when user moved or create the task in another state.
+  final Function(Task task) onTasksChanged;
+  const TaskStateCard({
+    required this.state,
+    this.cardWidth,
+    required this.onTasksChanged,
     Key? key,
   }) : super(key: key);
 
@@ -19,6 +25,21 @@ class TaskStateCard extends StatefulWidget {
 }
 
 class _TaskStateCardState extends TaskBaseWidgetState<TaskStateCard> {
+
+  late TaskStateCardBloc bloc;
+
+  @override
+  void initState() {
+    bloc = AppInjector.I.get<TaskStateCardBloc>(param1: widget.state.tasks);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget buildContent(BuildContext context) {
     return AppCard(
@@ -34,7 +55,7 @@ class _TaskStateCardState extends TaskBaseWidgetState<TaskStateCard> {
         children: [
           buildTitle(),
           const SizedBox(height: AppSizes.s8,),
-          buildTasks(widget.state.tasks),
+          buildTasks(),
           buildCreateTaskButton(),
         ],
       ),
@@ -58,25 +79,38 @@ class _TaskStateCardState extends TaskBaseWidgetState<TaskStateCard> {
     );
   }
 
-  Widget buildTasks(List<Task> tasks) {
-    if(tasks.isEmpty) return const SizedBox(height: AppSizes.s32,);
+  Widget buildTasks() {
+    return StreamBuilder<List<Task>>(
+      initialData: const [],
+      stream: bloc.tasksController.stream,
+      builder: (context, tasksSnapshot) {
+        if(tasksSnapshot.data!.isEmpty) return const SizedBox(height: AppSizes.s32,);
 
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        maxHeight: height* .66,
-        minHeight: AppSizes.s90,
-        minWidth: double.infinity,
-      ),
-      child: ListView.separated(
-        shrinkWrap: true,
-        padding: EdgeInsets.zero,
-        itemCount: tasks.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(top: AppSizes.s8,),
-          child: TaskCard(task: tasks[index]),
-        ),
-        separatorBuilder: (context, index) => SizedBox(height: index == tasks.length-1 ? AppSizes.s8 : AppSizes.s4,),
-      ),
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: height* .66,
+            minHeight: AppSizes.s90,
+            minWidth: double.infinity,
+          ),
+          child: ListView.separated(
+            shrinkWrap: true,
+            padding: EdgeInsets.zero,
+            itemCount: tasksSnapshot.data!.length,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.only(top: AppSizes.s8,),
+              child: TaskCard(
+                task: tasksSnapshot.data![index],
+                onUpdateTaskClicked: (task) => bloc.onUpdateTaskClicked(
+                  context: context,
+                  task: task,
+                  onDoneCallback: (task) => widget.onTasksChanged(task),
+                ),
+              ),
+            ),
+            separatorBuilder: (context, index) => SizedBox(height: index == tasksSnapshot.data!.length-1 ? AppSizes.s8 : AppSizes.s4,),
+          ),
+        );
+      }
     );
   }
 
@@ -84,7 +118,11 @@ class _TaskStateCardState extends TaskBaseWidgetState<TaskStateCard> {
     return Padding(
       padding: const EdgeInsets.only(top: AppSizes.s8,),
       child: AppTextButton(
-        onClicked: () {}, //TODO: Implement onCreateTaskClicked
+        onClicked: () => bloc.onCreateTaskClicked(
+          context: context,
+          state: widget.state,
+          onDoneCallback: (task) => widget.onTasksChanged(task),
+        ),
         color: Theme.of(context).primaryColor,
         title: appLocal.translate(TaskSubtitlesKeys.newTask),
         icon: AppIcons.plus,

@@ -48,7 +48,7 @@ class AppDatabaseManager extends DatabaseManager {
         '''create table ${TaskScheme.tableName} (
           ${TaskScheme.columnId} integer primary key autoincrement, 
            ${TaskScheme.columnTitle} text not null,
-           ${TaskScheme.columnDescription} text not null,
+           ${TaskScheme.columnDescription} text default null,
            ${TaskScheme.columnLabelId} int default null,
            ${TaskScheme.columnStateId} int not null,
            ${TaskScheme.columnEndDate} text default null,

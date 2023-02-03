@@ -19,7 +19,7 @@ class _BoardScreenState extends TaskBaseWidgetState<BoardScreen> {
 
   @override
   void initState() {
-    bloc.fetchTaskState();
+    bloc.fetchTaskStates();
     super.initState();
   }
 
@@ -65,7 +65,11 @@ class _BoardScreenState extends TaskBaseWidgetState<BoardScreen> {
       ),
       child: Column(
         children: [
-          TaskStateCard(state, cardWidth: width* .85),
+          TaskStateCard(
+            state: state,
+            cardWidth: width* .85,
+            onTasksChanged: (task) => bloc.onTasksChanged(state.id, task),
+          ),
         ],
       ),
     );

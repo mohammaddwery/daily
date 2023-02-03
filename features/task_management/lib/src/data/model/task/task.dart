@@ -4,7 +4,7 @@ import '../label/task_label.dart';
 class Task {
   final int id;
   final String title;
-  final String description;
+  final String? description;
   final TaskLabel? label;
   final TaskState state;
   final DateTime? endDate;
@@ -12,7 +12,7 @@ class Task {
   Task({
     required this.id,
     required this.title,
-    required this.description,
+    this.description,
     this.label,
     required this.state,
     this.endDate,

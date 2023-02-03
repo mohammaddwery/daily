@@ -15,6 +15,8 @@ dependencies:
     path: ../../infrastructure/core
   navigator:
     path: ../../infrastructure/navigator
+  dropdown_button2: ^1.9.2
+
 
 dev_dependencies:
   flutter_test:

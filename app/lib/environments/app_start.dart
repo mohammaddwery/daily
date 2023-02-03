@@ -57,9 +57,9 @@ abstract class AppStart {
 
     /// Initialize database
     if(buildConfig.getString(BuildConfig.databaseName)!=null) {
-      await AppInjector.I.get<DatabaseManager>().dropDatabase(
-        buildConfig.getString(BuildConfig.databaseName)!,
-      );
+      // await AppInjector.I.get<DatabaseManager>().dropDatabase(
+      //   buildConfig.getString(BuildConfig.databaseName)!,
+      // );
 
       await AppInjector.I.get<DatabaseManager>().open(
         buildConfig.getString(BuildConfig.databaseName)!,

@@ -1,11 +1,17 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import 'package:task_management/src/core/task_constants.dart';
 import '../../../data/model/task/task.dart';
 import 'task_label_badge.dart';
 
 class TaskCard extends StatelessWidget {
   final Task task;
-  const TaskCard({required this.task, Key? key}) : super(key: key);
+  final Function(Task task) onUpdateTaskClicked;
+  const TaskCard({
+    required this.task,
+    required this.onUpdateTaskClicked,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +20,6 @@ class TaskCard extends StatelessWidget {
       height: AppSizes.s110,
       padding: const EdgeInsets.symmetric(vertical: AppSizes.s16, horizontal: AppSizes.s16,),
       shadow: BoxShadow(color: Colors.black.withOpacity(0.0),),
-      onClicked: () {}, // TODO: Implement onClicked
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -33,13 +38,28 @@ class TaskCard extends StatelessWidget {
   }
 
   Widget buildTaskTitle(BuildContext context) {
-    return Text(
-      task.title,
-      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-        height: 1.1,
-      ),
-      maxLines: 2,
-      overflow: TextOverflow.ellipsis,
+    return Row(
+      children: [
+        Expanded(
+          child: Text(
+            task.title,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              height: 1.1,
+            ),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+        const SizedBox(width: AppSizes.s8),
+        ImageButtonWidget(
+          packageName: CoreConstants.packageName,
+          imageUrl: AppIcons.edit,
+          color: Theme.of(context).colorScheme.greyShade700,
+          onClicked: () => onUpdateTaskClicked(task),
+          width: AppSizes.s20,
+          height: AppSizes.s20,
+        ),
+      ],
     );
   }
 

@@ -1,130 +1,45 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import '../../../data/model/task/task.dart';
-import '../../../data/model/label/task_label.dart';
 import '../../../data/model/task_state/task_state.dart';
+import '../../../domain/use_case/get_local_task_states_with_tasks_use_case.dart';
 
 
 class BoardScreenBloc extends CrudDataBlocHandler {
-  final UseCase<List<TaskState>, NoParams> _getLocalTaskSatesUseCase;
+  final GetLocalTaskStatesWithTasksUseCase _getLocalTaskSatesWithTasksUseCase;
   BoardScreenBloc({
-    required UseCase<List<TaskState>, NoParams> getLocalTaskSatesUseCase,
-  }): _getLocalTaskSatesUseCase = getLocalTaskSatesUseCase;
+    required GetLocalTaskStatesWithTasksUseCase getLocalTaskSatesUseCase,
+  }): _getLocalTaskSatesWithTasksUseCase = getLocalTaskSatesUseCase;
 
   final taskStatesController = BehaviorSubjectComponent<UiState<List<TaskState>>?>();
   int get taskStatesCount => taskStatesController.getValue()?.data?.length??0;
 
   static const String logTag = 'BoardScreenBloc';
 
-  fetchTaskState() async => handleCrudDataList(
+  fetchTaskStates() async => handleCrudDataList(
     getCurrentState: taskStatesController.getValue,
     setCurrentState: taskStatesController.setValue,
-    exceptionTag: '$logTag fetchTaskState()',
-    crudDataList: () async => await _getLocalTaskSatesUseCase.call(NoParams()),
+    exceptionTag: '$logTag fetchTaskStates()',
+    crudDataList: () async => await _getLocalTaskSatesWithTasksUseCase.call(NoParams()),
   );
 
-  final List<TaskState> _taskStates = [
-    TaskState(
-      id: 1,
-      name: 'TODO',
-      tasks: [
-        Task(
-          id: 1,
-          title: 'Design Home',
-          description: 'description',
-          state: TaskState(id: 1, name: 'TODO'),
-          createdAt: DateTime.now(),
-          label: TaskLabel(id: 1, name: 'UI', color: Colors.greenAccent),
-        ),
-      ],
-    ),
-    TaskState(
-      id: 2,
-      name: 'INPROGRESS',
-      tasks: [
-        Task(
-          id: 2,
-          title: 'Test timer',
-          description: 'description',
-          state: TaskState(id: 2, name: 'INPROGRESS'),
-          createdAt: DateTime.now().subtract(const Duration(days: 2)),
-          label: TaskLabel(id: 1, name: 'WEB', color: Colors.lightBlueAccent),
-        ),
-        Task(
-          id: 3,
-          title: 'Implement login',
-          description: 'description',
-          state: TaskState(id: 2, name: 'INPROGRESS'),
-          createdAt: DateTime.now().subtract(const Duration(days: 3)),
-          label: TaskLabel(id: 1, name: 'MOBILE', color: Colors.orangeAccent),
-        ),
+  void onTasksChanged(int oldStateId, Task task) {
+    List<TaskState> states = List.of(taskStatesController.getValue()!.data!);
+    TaskState state = states.findItemBy<TaskState, int>(
+      predicate: (state) => state.id,
+      id: task.state.id,
+    )!;
 
-        Task(
-          id: 2,
-          title: 'Test timer',
-          description: 'description',
-          state: TaskState(id: 2, name: 'INPROGRESS'),
-          createdAt: DateTime.now().subtract(const Duration(days: 2)),
-        ),
-        Task(
-          id: 3,
-          title: 'As a user I need to authenticate via social networks.',
-          description: 'description',
-          state: TaskState(id: 2, name: 'INPROGRESS'),
-          createdAt: DateTime.now().subtract(const Duration(days: 3)),
-        ),
+    /// remove task from the old state cause the task created or moved to another state
+    TaskState oldState = states.findItemBy<TaskState, int>(
+      predicate: (state) => state.id,
+      id: oldStateId,
+    )!;
+    oldState.tasks.removeWhere((element) => element.id == task.id);
 
-        Task(
-          id: 2,
-          title: 'Test timer',
-          description: 'description',
-          state: TaskState(id: 2, name: 'INPROGRESS'),
-          createdAt: DateTime.now().subtract(const Duration(days: 2)),
-        ),
-        Task(
-          id: 3,
-          title: 'Implement login',
-          description: 'description',
-          state: TaskState(id: 2, name: 'INPROGRESS'),
-          createdAt: DateTime.now().subtract(const Duration(days: 3)),
-        ),
-
-        Task(
-          id: 2,
-          title: 'Test timer',
-          description: 'description',
-          state: TaskState(id: 2, name: 'INPROGRESS'),
-          createdAt: DateTime.now().subtract(const Duration(days: 2)),
-        ),
-        Task(
-          id: 3,
-          title: 'Implement login',
-          description: 'description',
-          state: TaskState(id: 2, name: 'INPROGRESS'),
-          createdAt: DateTime.now().subtract(const Duration(days: 3)),
-        ),
-
-        Task(
-          id: 2,
-          title: 'Test timer',
-          description: 'description',
-          state: TaskState(id: 2, name: 'INPROGRESS'),
-          createdAt: DateTime.now().subtract(const Duration(days: 2)),
-        ),
-        Task(
-          id: 3,
-          title: 'Implement login',
-          description: 'description',
-          state: TaskState(id: 2, name: 'INPROGRESS'),
-          createdAt: DateTime.now().subtract(const Duration(days: 3)),
-        ),
-      ],
-    ),
-    TaskState(
-      id: 3,
-      name: 'DONE',
-    ),
-  ];
+    state.tasks.add(task);
+    taskStatesController.setValue(UiState.success(states));
+  }
 
   @override
   void dispose() {

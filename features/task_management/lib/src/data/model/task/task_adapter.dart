@@ -1,5 +1,4 @@
-import 'package:task_management/src/data/model/task/create_task.dart';
-
+import '../task/create_task.dart';
 import '../label/task_label.dart';
 import '../task_state/task_state.dart';
 import 'task.dart';

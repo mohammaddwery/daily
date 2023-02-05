@@ -1,5 +1,4 @@
 import 'package:core/core.dart';
-import 'package:flutter/material.dart';
 import '../../../data/model/task/task.dart';
 import '../../../data/model/task_state/task_state.dart';
 import '../../../domain/use_case/get_local_task_states_with_tasks_use_case.dart';

@@ -66,6 +66,7 @@ class _BoardScreenState extends TaskBaseWidgetState<BoardScreen> {
       child: Column(
         children: [
           TaskStateCard(
+            key: UniqueKey(),
             state: state,
             cardWidth: width* .85,
             onTasksChanged: (task) => bloc.onTasksChanged(state.id, task),

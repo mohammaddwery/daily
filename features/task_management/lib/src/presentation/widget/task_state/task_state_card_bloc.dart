@@ -54,6 +54,7 @@ class TaskStateCardBloc extends CrudDataBlocHandler {
     tasksController.setValue(tasks);
   });
 
+  @override
   dispose() {
     tasksController.dispose();
   }

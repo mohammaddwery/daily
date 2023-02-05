@@ -88,7 +88,7 @@ class _TaskStateCardState extends TaskBaseWidgetState<TaskStateCard> {
 
         return ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight: height* .66,
+            maxHeight: height* .65,
             minHeight: AppSizes.s90,
             minWidth: double.infinity,
           ),

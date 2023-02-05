@@ -51,10 +51,18 @@ class AppDatabaseManager extends DatabaseManager {
            ${TaskScheme.columnDescription} text default null,
            ${TaskScheme.columnLabelId} int default null,
            ${TaskScheme.columnStateId} int not null,
-           ${TaskScheme.columnEndDate} text default null,
            ${TaskScheme.columnCreatedAt} text default current_timestamp,
            foreign key (${TaskScheme.columnLabelId}) references ${TaskLabelScheme.tableName} (${TaskLabelScheme.columnId}) 
            foreign key (${TaskScheme.columnStateId}) references ${TaskScheme.tableName} (${TaskScheme.columnId}) 
+           )'''
+    );
+    await db.execute(
+        '''create table ${TaskTimeLogScheme.tableName} (
+          ${TaskTimeLogScheme.columnId} integer primary key autoincrement, 
+           ${TaskTimeLogScheme.columnStart} text not null,
+           ${TaskTimeLogScheme.columnEnd} text default null,
+           ${TaskTimeLogScheme.columnTaskId} int not null,
+           foreign key (${TaskTimeLogScheme.columnTaskId}) references ${TaskTimeLogScheme.tableName} (${TaskTimeLogScheme.columnId}) 
            )'''
     );
 

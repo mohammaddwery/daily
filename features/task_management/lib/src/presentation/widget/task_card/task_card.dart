@@ -1,7 +1,10 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:task_management/src/core/task_constants.dart';
+import '../../../core/enum.dart';
 import '../../../data/model/task/task.dart';
+import '../task_card_timer/task_timer_bloc.dart';
+import '../task_card_timer/task_card_timer.dart';
 import 'task_label_badge.dart';
 
 class TaskCard extends StatelessWidget {
@@ -27,8 +30,9 @@ class TaskCard extends StatelessWidget {
           const Spacer(),
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.end,
             children: [
+              buildTaskTimer(),
+              const Spacer(),
               buildLabel(),
             ],
           ),
@@ -61,6 +65,14 @@ class TaskCard extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Widget buildTaskTimer() {
+    if(task.state.name != adaptEnumToString(TaskState.INGROGRESS)) {
+      return const SizedBox();
+    }
+
+    return TaskCardTimer(key: Key('${task.id}'), task.id);
   }
 
   Widget buildLabel() {

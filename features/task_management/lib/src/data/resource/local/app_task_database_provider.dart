@@ -1,4 +1,6 @@
 import 'package:core/core.dart';
+import 'package:task_management/src/data/model/task_time_log/create_task_time_log.dart';
+import 'package:task_management/src/data/model/task_time_log/task_time_log.dart';
 import '../../model/label/task_label.dart';
 import '../../model/task/create_task.dart';
 import '../../model/task/task.dart';
@@ -6,6 +8,7 @@ import '../../model/task/task_adapter.dart';
 import '../../model/task_state/task_state_adapter.dart';
 import '../../model/label/task_label_adapter.dart';
 import '../../model/task_state/task_state.dart';
+import '../../model/task_time_log/task_time_log_adapter.dart';
 import 'task_database_provider.dart';
 
 class AppTaskDatabaseProvider extends TaskDatabaseProvider {
@@ -131,6 +134,68 @@ class AppTaskDatabaseProvider extends TaskDatabaseProvider {
       whereArgs: [id],
     );
     return await getTask(id);
+  }
+
+  ///
+
+
+
+  /// Task Time Log
+
+  @override
+  Future<List<TaskTimeLog>> getTaskTimeLogs(int taskId) async {
+    final logs = await _databaseManager.query(
+      TaskTimeLogScheme.tableName,
+      where: '${TaskTimeLogScheme.columnTaskId}=?',
+      whereArgs: [ taskId ],
+    );
+    if(logs.isEmpty) throw FormatException('No tasks time log found for task: $taskId');
+
+    return adaptMapsToTasksTimeLog(logs);
+  }
+
+  @override
+  Future<List<TaskTimeLog>> getTasksTimeLog() async {
+    final logs = await _databaseManager.query(
+      TaskTimeLogScheme.tableName,
+    );
+    return adaptMapsToTasksTimeLog(logs);
+  }
+
+  @override
+  Future<TaskTimeLog> createTaskTimeLog(CreateTaskTimeLog log) async {
+    int id = await _databaseManager.insert(
+      TaskTimeLogScheme.tableName,
+      adaptCreateTaskTimeLogToMap(log),
+    );
+    return await getTaskTimeLog(id);
+  }
+
+  @override
+  Future<TaskTimeLog> getTaskTimeLog(int id) async {
+    final logs = await _databaseManager.query(
+      TaskTimeLogScheme.tableName,
+      where: '${TaskTimeLogScheme.columnId}=?',
+      whereArgs: [ id ],
+    );
+    if(logs.isEmpty) throw FormatException('No task\'s time log found with id:$id');
+
+    return adaptMapToTaskTimeLog(logs.first);
+  }
+
+  @override
+  Future<TaskTimeLog> stopTaskTimeLog(int taskId) async {
+    List<TaskTimeLog> currentTaskTimers = await getTaskTimeLogs(taskId);
+    List<TaskTimeLog> currentTaskPlayingTimeLogs = currentTaskTimers.playingLogs;
+    if(currentTaskPlayingTimeLogs.isEmpty) throw FormatException('No playing task time log found for task: $taskId');
+
+    await _databaseManager.update(
+      TaskTimeLogScheme.tableName,
+      adaptStopTaskTimeLogToMap(),
+      where: '${TaskTimeLogScheme.columnId} = ?',
+      whereArgs: [ currentTaskPlayingTimeLogs.first.id ],
+    );
+    return await getTaskTimeLog(currentTaskPlayingTimeLogs.first.id);
   }
 
   ///

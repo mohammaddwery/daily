@@ -17,6 +17,12 @@ class TaskScheme {
   static const String columnDescription = 'description';
   static const String columnLabelId = 'labelId';
   static const String columnStateId = 'stateId';
-  static const String columnEndDate = 'endDate';
   static const String columnCreatedAt = 'createdAt';
+}
+class TaskTimeLogScheme {
+  static const String tableName = 'task_time_log';
+  static const String columnId = 'id';
+  static const String columnStart = 'start';
+  static const String columnEnd = 'end';
+  static const String columnTaskId = 'taskId';
 }

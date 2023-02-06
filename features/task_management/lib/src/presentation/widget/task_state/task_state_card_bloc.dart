@@ -1,16 +1,23 @@
+import 'dart:io';
+import 'package:share_plus/share_plus.dart';
 import 'package:core/core.dart';
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:navigator/navigator.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import '../../../data/model/task/task.dart';
+import '../../../data/model/task/task_adapter.dart';
 import '../../../data/model/task_state/task_state.dart';
 
 class TaskStateCardBloc extends CrudDataBlocHandler {
   final TaskNavigator _taskNavigator;
+  final TaskState _taskState;
   TaskStateCardBloc({
     required TaskNavigator taskNavigator,
-    required List<Task> tasks,
-  }): _taskNavigator = taskNavigator {
-    tasksController.setValue(tasks);
+    required TaskState state,
+  }): _taskNavigator = taskNavigator, _taskState = state {
+    tasksController.setValue(state.tasks);
   }
 
   final tasksController = SeededBehaviorSubjectComponent<List<Task>>([]);
@@ -53,6 +60,51 @@ class TaskStateCardBloc extends CrudDataBlocHandler {
 
     tasksController.setValue(tasks);
   });
+
+  onExportCsvClicked() => handleVoidCrudDataItem(
+    exceptionTag: 'onExportCsvClicked()',
+    onFailed: _onExportFailed,
+    voidCrudDataItem: () async => await _exportCsvFile(
+      columnsName: _taskCsvColumns,
+      entries: adaptTasksToCsvEntries(_taskState.tasks),
+    ),
+  );
+
+  final _taskCsvColumns = [
+    TaskScheme.columnId,
+    TaskScheme.columnTitle,
+    TaskScheme.columnDescription,
+    TaskLabelScheme.tableName,
+    TaskStateScheme.tableName,
+    TaskScheme.columnCreatedAt,
+  ];
+
+  _onExportFailed(String message) {
+    ToastHelper.showToast(message);
+  }
+
+  _exportCsvFile({
+    required List<String> columnsName,
+    required List<List<dynamic>> entries,
+  }) async {
+    if (!await Permission.storage.request().isGranted) return;
+
+    Directory tempDirectory = await getTemporaryDirectory();
+    String? tempDirectoryPath = tempDirectory.path;
+    final filePath = "$tempDirectoryPath${_taskState.name}${_taskState.id}_${DateTime.now().toIso8601String()}.csv";
+    File file = File(filePath);
+    String csvData = const ListToCsvConverter().convert([
+      columnsName,
+      ...entries,
+    ]);
+    File csvFile = await file.writeAsString(csvData);
+    Share.shareXFiles(
+      [ XFile(csvFile.path), ],
+      text: 'Checkout my daily tasks',
+    ).then((value) {
+      csvFile.delete();
+    });
+  }
 
   @override
   dispose() {

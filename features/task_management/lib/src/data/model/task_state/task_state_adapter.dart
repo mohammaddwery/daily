@@ -1,4 +1,5 @@
-import '../task/task_adapter.dart';
+import 'package:core/core.dart';
+
 import 'task_state.dart';
 
 List<TaskState> adaptMapListToTaskStates(List<Map<String, dynamic>> maps,)

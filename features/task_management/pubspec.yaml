@@ -16,6 +16,11 @@ dependencies:
   navigator:
     path: ../../infrastructure/navigator
   dropdown_button2: ^1.9.2
+  path_provider: ^2.0.11
+  csv: ^5.0.1
+  permission_handler: ^10.2.0
+  share_plus: ^6.3.0
+
 
 
 dev_dependencies:
@@ -27,3 +32,4 @@ flutter:
   uses-material-design: true
   assets:
     - assets/subtitles/
+    - assets/icons/

@@ -1,5 +1,7 @@
 import 'package:core/core.dart';
 import 'package:flutter/material.dart';
+import '../../../core/task_constants.dart';
+import '../../helpers/task_icons.dart';
 import '../task_base_widget_state.dart';
 import '../../../data/model/task_state/task_state.dart';
 import '../../helpers/task_subtitles_keys.dart';
@@ -30,7 +32,7 @@ class _TaskStateCardState extends TaskBaseWidgetState<TaskStateCard> {
 
   @override
   void initState() {
-    bloc = AppInjector.I.get<TaskStateCardBloc>(param1: widget.state.tasks);
+    bloc = AppInjector.I.get<TaskStateCardBloc>(param1: widget.state);
     super.initState();
   }
 
@@ -74,6 +76,15 @@ class _TaskStateCardState extends TaskBaseWidgetState<TaskStateCard> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
+        ),
+        const SizedBox(width: AppSizes.s8),
+        ImageButtonWidget(
+          packageName: TaskConstants.packageName,
+          imageUrl: TaskIcons.exportCsv,
+          color: Theme.of(context).colorScheme.greyShade700,
+          onClicked: () => bloc.onExportCsvClicked(),
+          width: AppSizes.s20,
+          height: AppSizes.s20,
         ),
       ],
     );

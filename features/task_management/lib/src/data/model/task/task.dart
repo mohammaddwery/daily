@@ -7,7 +7,6 @@ class Task {
   final String? description;
   final TaskLabel? label;
   final TaskState state;
-  final DateTime? endDate;
   final DateTime createdAt;
   Task({
     required this.id,
@@ -15,7 +14,6 @@ class Task {
     this.description,
     this.label,
     required this.state,
-    this.endDate,
     required this.createdAt,
   });
 }

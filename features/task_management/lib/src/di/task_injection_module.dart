@@ -79,9 +79,9 @@ class TaskInjectionModule implements InjectionModule {
       ..registerFactory<BoardScreenBloc>(() => BoardScreenBloc(
         getLocalTaskSatesUseCase: injector.get(),
       ))
-      ..registerFactoryParam<TaskStateCardBloc>((state, _) => TaskStateCardBloc(
+      ..registerFactoryParam<TaskStateCardBloc>((tasks, _) => TaskStateCardBloc(
         taskNavigator: injector.get(),
-        state: state,
+        tasks: tasks,
       ))
       ..registerFactory<UpsertTaskScreenBloc>(() => CreateTaskScreenBloc(
         getLocalTaskStatesUseCase: injector.get(),

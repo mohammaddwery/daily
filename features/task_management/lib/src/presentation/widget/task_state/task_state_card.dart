@@ -32,7 +32,7 @@ class _TaskStateCardState extends TaskBaseWidgetState<TaskStateCard> {
 
   @override
   void initState() {
-    bloc = AppInjector.I.get<TaskStateCardBloc>(param1: widget.state);
+    bloc = AppInjector.I.get<TaskStateCardBloc>(param1: widget.state.tasks);
     super.initState();
   }
 

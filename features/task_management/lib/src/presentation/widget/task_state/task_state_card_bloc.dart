@@ -12,12 +12,12 @@ import '../../../data/model/task_state/task_state.dart';
 
 class TaskStateCardBloc extends CrudDataBlocHandler {
   final TaskNavigator _taskNavigator;
-  final TaskState _taskState;
+  final List<Task> _tasks;
   TaskStateCardBloc({
     required TaskNavigator taskNavigator,
-    required TaskState state,
-  }): _taskNavigator = taskNavigator, _taskState = state {
-    tasksController.setValue(state.tasks);
+    required List<Task> tasks,
+  }): _taskNavigator = taskNavigator, _tasks = tasks {
+    tasksController.setValue(_tasks);
   }
 
   final tasksController = SeededBehaviorSubjectComponent<List<Task>>([]);
@@ -66,7 +66,7 @@ class TaskStateCardBloc extends CrudDataBlocHandler {
     onFailed: _onExportFailed,
     voidCrudDataItem: () async => await _exportCsvFile(
       columnsName: _taskCsvColumns,
-      entries: adaptTasksToCsvEntries(_taskState.tasks),
+      entries: adaptTasksToCsvEntries(_tasks),
     ),
   );
 
@@ -91,7 +91,7 @@ class TaskStateCardBloc extends CrudDataBlocHandler {
 
     Directory tempDirectory = await getTemporaryDirectory();
     String? tempDirectoryPath = tempDirectory.path;
-    final filePath = "$tempDirectoryPath${_taskState.name}${_taskState.id}_${DateTime.now().toIso8601String()}.csv";
+    final filePath = "$tempDirectoryPath${DateTime.now().toIso8601String()}.csv";
     File file = File(filePath);
     String csvData = const ListToCsvConverter().convert([
       columnsName,
